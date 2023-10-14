@@ -1,12 +1,14 @@
 package com.example.catsanddogsandroid
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.catsanddogsandroid.databinding.ActivityMainBinding
+import com.example.catsanddogsandroid.databinding.DisplaySentenceBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityMainBinding;
@@ -37,6 +39,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val editor = sharedPreferences.edit()
             editor.putString(usernameKey, username)
             editor.apply()
+
+            val intent = Intent(this, DisplaySentence::class.java)
+            startActivity(intent)
         }
 
     }
