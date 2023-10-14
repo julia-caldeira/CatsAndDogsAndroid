@@ -35,12 +35,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         if(view.id == R.id.btUserName){
             var username = binding.etUserName.text.toString()
+            val intent = Intent(this, DisplaySentence::class.java)
 
             val editor = sharedPreferences.edit()
             editor.putString(usernameKey, username)
             editor.apply()
 
-            val intent = Intent(this, DisplaySentence::class.java)
+            intent.putExtra("user_name_key", username)
             startActivity(intent)
         }
 
