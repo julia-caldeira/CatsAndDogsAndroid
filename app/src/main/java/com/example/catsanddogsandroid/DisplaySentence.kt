@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.catsanddogsandroid.databinding.DisplaySentenceBinding
 import com.caverock.androidsvg.SVG
@@ -26,8 +28,8 @@ class DisplaySentence : AppCompatActivity(), View.OnClickListener{
 
         val intent = intent
         val nomeUsuario = intent.getStringExtra("user_name_key")
-        if (nomeUsuario != null) {
-            binding.tvUserName.text = "Olá $nomeUsuario"
+        if (nomeUsuario != null && nomeUsuario != "") {
+            binding.tvUserName.text = "Olá, $nomeUsuario"
         }
 
         binding.imgCat.setOnClickListener(this)
@@ -43,25 +45,33 @@ class DisplaySentence : AppCompatActivity(), View.OnClickListener{
                 if (binding.imgCat.colorFilter == null) {
                     binding.imgCat.setColorFilter(ContextCompat.getColor(this, R.color.yellow))
                     isCatImageClicked = true
+                    isDogImageClicked = false
                     binding.imgDog.setColorFilter(null) // Define a imagem do cachorro para a cor padrão
                 } else {
-                    binding.imgCat.setColorFilter(null) // Define a imagem do gato para a cor padrão
                     isCatImageClicked = false
+                    binding.imgCat.setColorFilter(null) // Define a imagem do gato para a cor padrão
                 }
             }
 
             R.id.imgDog -> {
                 if (binding.imgDog.colorFilter == null) {
                     binding.imgDog.setColorFilter(ContextCompat.getColor(this, R.color.yellow))
-                    binding.imgCat.setColorFilter(null) // Define a imagem do gato para a cor padrão
                     isDogImageClicked = true
+                    isCatImageClicked = false
+                    binding.imgCat.setColorFilter(null) // Define a imagem do gato para a cor padrão
                 } else {
-                    binding.imgDog.setColorFilter(null) // Define a imagem do cachorro para a cor padrão
                     isDogImageClicked = false
+                    binding.imgDog.setColorFilter(null) // Define a imagem do cachorro para a cor padrão
                 }
             }
 
             R.id.btGetSentence -> {
+                if(!isCatImageClicked && !isDogImageClicked) {
+                    val text = "Escolha gato ou cão para receber uma curiosidade!"
+                    val duration = Toast.LENGTH_SHORT
+                    val toast = Toast.makeText(applicationContext, text, duration)
+                    toast.show()
+                }
                 if(isCatImageClicked){
                     val randomCatSentence = catSentences.random()
                     binding.tvSentence.text = randomCatSentence

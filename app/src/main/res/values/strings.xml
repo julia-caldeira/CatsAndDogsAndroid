@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">CatsAndDogsAndroid</string>
+    <string name="ola_user">Olá</string>
+    <string name="dog">dog</string>
+    <string name="gerar_outra_frase">Gerar outra frase</string>
+    <string name="cat">cat</string>
+    <string name="frases_de_gatos_e_c_es">Frases de gatos e cães</string>
+    <string name="digite_seu_nome">Digite seu nome</string>
+    <string name="nome">Jane Eyre</string>
+    <string name="avan_ar">Avançar</string>
 </resources>
