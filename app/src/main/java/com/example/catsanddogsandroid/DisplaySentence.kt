@@ -8,17 +8,22 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.catsanddogsandroid.databinding.DisplaySentenceBinding
 import com.caverock.androidsvg.SVG
 import com.caverock.androidsvg.SVGParseException
+import com.example.catsanddogsandroid.viewModel.DisplaySentenceViewModel
 import java.io.IOException
 
 class DisplaySentence : AppCompatActivity(), View.OnClickListener{
+    val context = this
 
     private lateinit var binding : DisplaySentenceBinding
     private var isDogImageClicked = false
     private var isCatImageClicked = false
 
+    private lateinit var displaySentenceVM : DisplaySentenceViewModel
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +41,17 @@ class DisplaySentence : AppCompatActivity(), View.OnClickListener{
         binding.imgDog.setOnClickListener(this)
         binding.btGetSentence.setOnClickListener(this)
 
+        displaySentenceVM = ViewModelProvider(this).get(DisplaySentenceViewModel::class.java)
+        displaySentenceVM.selectAnimalWarning(context)
+        setObserver()
 
+
+    }
+
+    private fun setObserver() {
+        displaySentenceVM.getSentence().observe(this, Observer {
+            binding.tvSentence.text = it
+        })
     }
 
     override fun onClick(view: View) {
@@ -67,34 +82,15 @@ class DisplaySentence : AppCompatActivity(), View.OnClickListener{
 
             R.id.btGetSentence -> {
                 if(!isCatImageClicked && !isDogImageClicked) {
-                    val text = "Escolha gato ou cão para receber uma curiosidade!"
-                    val duration = Toast.LENGTH_SHORT
-                    val toast = Toast.makeText(applicationContext, text, duration)
-                    toast.show()
+                    displaySentenceVM.selectAnimalWarning(context)
                 }
                 if(isCatImageClicked){
-                    val randomCatSentence = catSentences.random()
-                    binding.tvSentence.text = randomCatSentence
+                    displaySentenceVM.generateCatSentence()
                 }else if(isDogImageClicked){
-                    val randomDogSentence = dogSentences.random()
-                    binding.tvSentence.text = randomDogSentence
+                    displaySentenceVM.generateDogSentence()
                 }
             }
         }
-    }
-
-    companion object {
-        val catSentences = listOf(
-            "Purring does not always indicate that a cat is happy and healthy - some cats will purr loudly when they are terrified or in pain.",
-            "Baking chocolate is the most dangerous chocolate to your cat.",
-            "Cats have been domesticated for half as long as dogs have been."
-        )
-
-        val dogSentences = listOf(
-            "Yorkshires do not have a high IQ.",
-            "Dogs are energetic.",
-            "Most dogs have a lot of fur."
-        )
     }
 
 }
